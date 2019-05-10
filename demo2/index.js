@@ -10,12 +10,13 @@ const data = {message:[
     {key: "5", name: '小雞', message: '採草莓'},
 ]};
 // 動作指令
-const addMessage = article => ({type: 'addMessage', payload: 'article'});
+const addMessage = article => ({type: 'addMessage', payload: article});
 
 const rootReducer = (state = data, action) => {
     switch (action.type) {
         case 'addMessage':
-            break;
+            action.payload.key = String(state.message.length+1)
+            return {...state, message: [...state.message, action.payload]};
         default:
             return state;
     }
@@ -23,4 +24,4 @@ const rootReducer = (state = data, action) => {
 
 const store = createStore(rootReducer);
 
-export default store
+export {store, addMessage}
