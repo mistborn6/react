@@ -114,6 +114,26 @@ body {
     border-radius: 5px;
 }
 
+
+.list{
+    background: #F2F2F2;
+    height: 100px;
+    width: 620px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.listBlock{
+    margin-top: 20px;
+}
+
+.listIcon{
+    color: #757575;
+    margin-top: -15px;
+    margin-left: 25px;
+    font-size: 16px;
+}
+
 .complete {
     color: #9b9b9b;
     text-decoration: line-through;
