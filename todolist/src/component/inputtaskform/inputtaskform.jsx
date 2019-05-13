@@ -8,24 +8,23 @@ class InputTaskForm extends React.Component {
                 <div class="inputTask">
                     <InputName className='far fa-calendar-alt' inputName='Deadline'/>
                     <div class='inputForm'>
-                        <input type="date" class='inputStyle inputDate' value={this.props.date}/>
-                        <input type="time" class='inputStyle inputDate' value={this.props.time}/>
+                        <input name='date' type="date" class='inputStyle inputDate' value={this.props.stateData.date} onChange={this.props.changeState}/>
+                        <input name='time' type="time" class='inputStyle inputDate' value={this.props.stateData.time} onChange={this.props.changeState}/>
                     </div>
                     <InputName className='far fa-file' inputName='File'/>
                     <div class='inputForm'>
-                        <input type="file" class='inputStyle'/><br/>
-                        <span class='inputStyle'>{this.props.fileName}</span>
+                        <input name='file' type="file" class='inputStyle' ref={this.props.filebox} onChange={this.props.changeState}/><br/>
+                        <span class='inputStyle'>{this.props.stateData.file}</span>
                     </div>
                     <InputName className='far fa-comment-dots' inputName='Comment'/>
                     <div class='inputForm'>
-                        <textarea cols="55" rows="7" class='inputStyle'>
-                            {this.props.comment}
+                        <textarea name='comment' cols="55" rows="7" class='inputStyle' value={this.props.stateData.comment} onChange={this.props.changeState}>
                         </textarea>
                     </div>
                 </div>
                 <div>
                     <button class='button cancelButton' onClick={this.props.closeAdd}>X Cancel</button>
-                    <button class='button addButton'>+ Add Task</button>
+                    <button class='button addButton' onClick={this.props.submitTodo}>+ Save</button>
                 </div>
             </div>
         );
