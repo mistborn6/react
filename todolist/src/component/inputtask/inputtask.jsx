@@ -6,8 +6,12 @@ import {addTodolist} from '../../action'
 class ConnectInputTask extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            id: '', name: '', date: '', time: '', file: '', comment: '', important: '', complete: false
+        if (this.props.listData) {
+            this.state = this.props.listData;
+        } else {
+            this.state = {
+                id: '', name: '', date: '', time: '', file: '', comment: '', important: '', complete: false
+            }
         }
         this.filebox = React.createRef()
         this.changeState = this.changeState.bind(this)
