@@ -1,7 +1,9 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {InputTask} from '../inputtask'
+import {editTodolist} from '../../action'
 
-class List extends React.Component {
+class ConnectList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -12,16 +14,18 @@ class List extends React.Component {
         this.changeState = this.changeState.bind(this)
         this.openEdit = this.openEdit.bind(this)
         this.closeEdit = this.closeEdit.bind(this)
+        this.updateTodolist = this.updateTodolist.bind(this)
         this.list = React.createRef()
     }
     
     changeState(type) {
         switch (type) {
             case 'complete':
-                this.setState({complete: window.event.target.checked});
+                this.setState({complete: window.event.target.checked}, this.updateTodolist);
                 break;
             case 'important':
-                this.state.important == '' ? this.setState({important: 'Y'}) : this.setState({important: ''});
+                this.state.important == '' ? this.setState({important: 'Y'}, this.updateTodolist) 
+                : this.setState({important: ''}, this.updateTodolist);
                 break;
         }
     }
@@ -30,13 +34,22 @@ class List extends React.Component {
         if (event.target.className.indexOf('fa-star') === -1 &&
             event.target.className.indexOf('taskChk') === -1 ) {
                 this.list.current.style.display = 'none';
-                this.setState({editTask: (<InputTask closeAdd={this.closeEdit} listData={this.props.listData} />)})
+                this.setState({editTask: (<InputTask closeAdd={this.closeEdit} 
+                                listData={this.props.listData} 
+                                changeState={this.changeState.bind(this)} 
+                                editTodolist={this.props.editTodolist} />)})
             }
     }
 
     closeEdit() {
         this.list.current.style.display = '';
         this.setState({editTask: null})
+    }
+
+    updateTodolist() {
+        let updateList = Object.assign({}, this.props.listData);
+        updateList = {...updateList, complete: this.state.complete, important: this.state.important}
+        this.props.editTodolist(updateList)
     }
 
     render () {
@@ -64,5 +77,13 @@ class List extends React.Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        editTodolist: todolist => (dispatch(editTodolist(todolist)))
+    }
+}
+
+const List = connect(null, mapDispatchToProps)(ConnectList)
 
 export {List}

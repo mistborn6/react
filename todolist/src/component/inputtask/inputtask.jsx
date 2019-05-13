@@ -17,6 +17,13 @@ class ConnectInputTask extends React.Component {
         this.changeState = this.changeState.bind(this)
         this.tagImportant = this.tagImportant.bind(this)
         this.submitTodo = this.submitTodo.bind(this)
+        this.changeListState = type => {
+            if (this.props.changeState) {
+                this.props.changeState(type);
+            } else {
+                console.log('新增狀態所以沒有this.props.changeState');
+            }
+        }
     }
 
     changeState(event) {
@@ -25,23 +32,30 @@ class ConnectInputTask extends React.Component {
             value = value.substring(value.lastIndexOf('\\') + 1);
         } else if (event.target.name === 'complete') {
             value = event.target.checked
+            this.changeListState('complete')
         }
         this.setState({[event.target.name]: value})
     }
 
     tagImportant() {
-        this.state.important == '' ? this.setState({important: 'Y'}) : this.setState({important: ''})
+        this.state.important === '' ? this.setState({important: 'Y'}) : this.setState({important: ''})
+        this.changeListState('important')
     }
 
     submitTodo() {
         if (this.state.name == '') {
             alert ('代辦事項名稱未輸入');
         } else {
-            this.props.addTodolist(this.state)
-            alert('成功新增')
-            this.props.closeAdd()
+            if (this.state.id === '') {
+                this.props.addTodolist(this.state)
+                alert('成功新增')
+            } else {
+                this.props.editTodolist(this.state)
+                alert('成功編輯')
+            }
             this.setState({id: '', name: '', date: '', time: '', file: '', comment: '', important: '', complete: false})
             this.filebox.current.value = ''
+            this.props.closeAdd()
         }
     }
 
