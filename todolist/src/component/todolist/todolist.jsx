@@ -10,7 +10,19 @@ class ConnectTodoList extends React.Component {
         
         let todoCount = 0;
         let Lists = this.props.data.map((item) => {
-            if (!item.complete) {todoCount++}
+            switch (this.props.page) {
+                case 'progress':
+                    if (item.complete) return null;
+                    break;
+                case 'completed':
+                    if (!item.complete) return null;
+                    break;
+            }
+            if (this.props.page) {
+                todoCount++;
+            } else if (!item.complete) {
+                todoCount++;
+            }
             return <List key={item.id} listData={item} />
         })
 
@@ -20,7 +32,7 @@ class ConnectTodoList extends React.Component {
                     {Lists}
                 </div>
                 <div class='countText'>
-                    <span>{todoCount} tasks left</span>
+                    <span>{todoCount} tasks {this.props.page === 'completed' ? 'completed' : 'left'}</span>
                 </div>
             </div>
             
